@@ -1,0 +1,40 @@
+date,description,type,amount,mcc
+01 Jan 2025,Salary - HCL Technologies,CR,105000,
+06 Jan 2025,UPI - Swiggy,DR,490,5812
+09 Jan 2025,UPI - Amazon,DR,2100,5999
+12 Jan 2025,POS - DMart,DR,2800,5411
+16 Jan 2025,UPI - Ola,DR,360,4121
+20 Jan 2025,UPI - Airtel Postpaid,DR,849,4813
+24 Jan 2025,NEFT - SBI MF SIP,DR,8000,
+28 Jan 2025,ATM Withdrawal,DR,3000,6011
+01 Feb 2025,Salary - HCL Technologies,CR,105000,
+07 Feb 2025,UPI - Zomato,DR,610,5812
+10 Feb 2025,UPI - BigBasket,DR,1350,5411
+14 Feb 2025,POS - Shoppers Stop,DR,4800,5651
+18 Feb 2025,UPI - BookMyShow,DR,880,7832
+22 Feb 2025,UPI - Netflix,DR,649,7841
+25 Feb 2025,NEFT - SBI MF SIP,DR,8000,
+01 Mar 2025,Salary - HCL Technologies,CR,105000,
+05 Mar 2025,UPI - Swiggy,DR,520,5812
+10 Mar 2025,POS - Reliance Fresh,DR,1900,5411
+15 Mar 2025,UPI - Amazon,DR,3400,5999
+20 Mar 2025,NEFT - SBI MF SIP,DR,8000,
+25 Mar 2025,UPI - Uber,DR,410,4121
+01 Apr 2025,Salary - HCL Technologies,CR,105000,
+04 Apr 2025,NEFT - SBI Home Loans EMI,DR,32500,
+07 Apr 2025,UPI - Swiggy,DR,440,5812
+11 Apr 2025,UPI - BigBasket,DR,1600,5411
+14 Apr 2025,POS - DMart,DR,2400,5411
+18 Apr 2025,UPI - Airtel Postpaid,DR,849,4813
+22 Apr 2025,UPI - BookMyShow,DR,760,7832
+01 May 2025,Salary - HCL Technologies,CR,105000,
+04 May 2025,NEFT - SBI Home Loans EMI,DR,32500,
+08 May 2025,UPI - Zomato,DR,580,5812
+12 May 2025,UPI - Amazon,DR,1900,5999
+16 May 2025,POS - Lifestyle,DR,3600,5651
+20 May 2025,UPI - Ola,DR,390,4121
+24 May 2025,NEFT - SBI MF SIP,DR,8000,
+01 Jun 2025,Salary - HCL Technologies,CR,105000,
+04 Jun 2025,NEFT - SBI Home Loans EMI,DR,32500,
+08 Jun 2025,UPI - Swiggy,DR,510,5812
+12 Jun 2025,UPI - BigBasket,DR,1420,5411

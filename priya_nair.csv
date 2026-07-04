@@ -1,0 +1,38 @@
+date,description,type,amount,mcc
+05 Jan 2025,Salary - Wipro Ltd,CR,95000,
+08 Jan 2025,UPI - BigBasket,DR,1240,5411
+12 Jan 2025,UPI - Netflix,DR,649,7841
+15 Jan 2025,POS - Reliance Fresh,DR,2100,5411
+18 Jan 2025,UPI - Swiggy,DR,480,5812
+22 Jan 2025,UPI - Uber,DR,420,4121
+26 Jan 2025,UPI - Airtel Postpaid,DR,899,4813
+29 Jan 2025,ATM Withdrawal,DR,4000,6011
+05 Feb 2025,Salary - Wipro Ltd,CR,95000,
+09 Feb 2025,UPI - Swiggy,DR,680,5812
+14 Feb 2025,POS - Shoppers Stop,DR,5600,5651
+17 Feb 2025,UPI - Amazon,DR,1800,5999
+19 Feb 2025,UPI - BookMyShow,DR,940,7832
+22 Feb 2025,UPI - BigBasket,DR,1100,5411
+25 Feb 2025,UPI - Hotstar,DR,299,7841
+05 Mar 2025,Salary - Wipro Ltd,CR,95000,
+10 Mar 2025,UPI - DMart,DR,2800,5411
+13 Mar 2025,UPI - Zomato,DR,520,5812
+16 Mar 2025,POS - Westside,DR,3200,5651
+18 Mar 2025,POS - Maruti Suzuki Arena Pune,DR,220000,5511
+21 Mar 2025,NEFT - HDFC Auto Loans,DR,12400,
+25 Mar 2025,UPI - Swiggy,DR,390,5812
+05 Apr 2025,Salary - Wipro Ltd,CR,95000,
+08 Apr 2025,UPI - Swiggy,DR,520,5812
+12 Apr 2025,UPI - BigBasket,DR,1380,5411
+15 Apr 2025,POS - PVR Cinemas,DR,880,7832
+18 Apr 2025,UPI - Uber,DR,460,4121
+21 Apr 2025,NEFT - HDFC Auto Loans,DR,12400,
+25 Apr 2025,UPI - Airtel Postpaid,DR,899,4813
+05 May 2025,Salary - Wipro Ltd,CR,95000,
+09 May 2025,UPI - Zomato,DR,610,5812
+14 May 2025,POS - Reliance Fresh,DR,2400,5411
+18 May 2025,UPI - Amazon,DR,3200,5999
+21 May 2025,NEFT - HDFC Auto Loans,DR,12400,
+05 Jun 2025,Salary - Wipro Ltd,CR,95000,
+08 Jun 2025,UPI - Swiggy,DR,570,5812
+12 Jun 2025,UPI - BigBasket,DR,1150,5411

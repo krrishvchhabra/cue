@@ -1,0 +1,38 @@
+date,description,type,amount,mcc
+02 Jan 2025,Salary - Deloitte India,CR,110000,
+07 Jan 2025,UPI - IRCTC,DR,3200,4112
+10 Jan 2025,UPI - Swiggy,DR,640,5812
+13 Jan 2025,POS - Lifestyle,DR,4500,5651
+17 Jan 2025,UPI - Amazon,DR,2100,5999
+22 Jan 2025,UPI - Uber,DR,390,4121
+26 Jan 2025,UPI - Airtel Postpaid,DR,999,4813
+29 Jan 2025,ATM Withdrawal,DR,6000,6011
+02 Feb 2025,Salary - Deloitte India,CR,110000,
+08 Feb 2025,UPI - Amazon,DR,2300,5999
+11 Feb 2025,UPI - Zomato,DR,580,5812
+14 Feb 2025,POS - Tanishq,DR,18000,5944
+18 Feb 2025,UPI - BookMyShow,DR,1200,7832
+22 Feb 2025,UPI - BigBasket,DR,1400,5411
+25 Feb 2025,UPI - Vi Postpaid,DR,799,4813
+02 Mar 2025,Salary - Deloitte India,CR,110000,
+06 Mar 2025,UPI - Swiggy,DR,510,5812
+11 Mar 2025,UPI - BookMyShow,DR,1100,7832
+14 Mar 2025,POS - Shoppers Stop,DR,6200,5651
+15 Mar 2025,Inward SWIFT - Standard Chartered UK,CR,185000,
+19 Mar 2025,UPI - IRCTC,DR,2800,4112
+02 Apr 2025,Salary - Deloitte India,CR,110000,
+08 Apr 2025,UPI - Zomato,DR,480,5812
+12 Apr 2025,POS - DMart,DR,2600,5411
+14 Apr 2025,Inward SWIFT - Standard Chartered UK,CR,185000,
+18 Apr 2025,UPI - Amazon,DR,3100,5999
+22 Apr 2025,UPI - Uber,DR,420,4121
+26 Apr 2025,UPI - Airtel Postpaid,DR,999,4813
+02 May 2025,Salary - Deloitte India,CR,110000,
+07 May 2025,UPI - Swiggy,DR,720,5812
+10 May 2025,UPI - BookMyShow,DR,960,7832
+13 May 2025,Inward SWIFT - Standard Chartered UK,CR,185000,
+17 May 2025,POS - Lifestyle,DR,5100,5651
+22 May 2025,UPI - IRCTC,DR,3600,4112
+02 Jun 2025,Salary - Deloitte India,CR,110000,
+09 Jun 2025,UPI - IRCTC,DR,4100,4112
+12 Jun 2025,UPI - Zomato,DR,650,5812

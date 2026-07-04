@@ -1,0 +1,40 @@
+date,description,type,amount,mcc
+03 Jan 2025,Salary - Tata Consultancy Services,CR,145000,
+07 Jan 2025,UPI - Swiggy,DR,560,5812
+10 Jan 2025,UPI - Amazon,DR,3200,5999
+13 Jan 2025,POS - DMart,DR,3600,5411
+17 Jan 2025,NEFT - SBI MF SIP,DR,10000,
+20 Jan 2025,UPI - Uber,DR,480,4121
+24 Jan 2025,UPI - Airtel Postpaid,DR,999,4813
+28 Jan 2025,POS - Croma,DR,6400,5732
+03 Feb 2025,Salary - Tata Consultancy Services,CR,145000,
+06 Feb 2025,UPI - Zomato,DR,720,5812
+10 Feb 2025,NEFT - SBI MF SIP,DR,10000,
+14 Feb 2025,POS - Shoppers Stop,DR,5200,5651
+18 Feb 2025,UPI - BookMyShow,DR,1100,7832
+22 Feb 2025,UPI - BigBasket,DR,1800,5411
+25 Feb 2025,UPI - Netflix,DR,649,7841
+03 Mar 2025,Salary - Tata Consultancy Services,CR,145000,
+07 Mar 2025,UPI - Swiggy,DR,610,5812
+11 Mar 2025,NEFT - SBI MF SIP,DR,10000,
+15 Mar 2025,POS - Reliance Fresh,DR,2200,5411
+19 Mar 2025,UPI - Amazon,DR,4100,5999
+24 Mar 2025,UPI - Uber,DR,520,4121
+03 Apr 2025,Salary - Tata Consultancy Services,CR,145000,
+05 Apr 2025,NEFT - SBI MF Lumpsum - Bluechip Fund,CR,500000,
+07 Apr 2025,UPI - Swiggy,DR,490,5812
+10 Apr 2025,NEFT - SBI MF SIP,DR,10000,
+14 Apr 2025,POS - DMart,DR,3100,5411
+18 Apr 2025,UPI - BookMyShow,DR,980,7832
+22 Apr 2025,UPI - Airtel Postpaid,DR,999,4813
+03 May 2025,Salary - Tata Consultancy Services,CR,145000,
+07 May 2025,UPI - Zomato,DR,640,5812
+10 May 2025,NEFT - SBI MF SIP,DR,10000,
+14 May 2025,POS - Lifestyle,DR,4800,5651
+18 May 2025,UPI - Amazon,DR,2700,5999
+22 May 2025,NEFT - SBI MF Lumpsum - Midcap Fund,DR,300000,
+03 Jun 2025,Salary - Tata Consultancy Services,CR,145000,
+07 Jun 2025,UPI - Swiggy,DR,530,5812
+10 Jun 2025,NEFT - SBI MF SIP,DR,10000,
+14 Jun 2025,POS - DMart,DR,2900,5411
+18 Jun 2025,UPI - Uber,DR,440,4121
