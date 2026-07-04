@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cue — SBI Agentic AI · Digital Engagement</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --sbi-blue: #2255A4;
+    --sbi-blue-dark: #1a4282;
+    --sbi-blue-light: #EBF2FF;
+    --sbi-blue-mid: #B5D4F4;
+    --text-primary: #1a1a1a;
+    --text-secondary: #5f6368;
+    --text-muted: #9aa0a6;
+    --border: #e0e0e0;
+    --bg: #f8f9fa;
+    --bg-card: #ffffff;
+    --bg-secondary: #f1f3f4;
+    --green: #1a7a3c;
+    --green-bg: #e6f4ea;
+    --amber: #856404;
+    --amber-bg: #fff3cd;
+    --signal-bg: #fffbeb;
+    --signal-border: #fcd34d;
+    --radius: 12px;
+  }
+  html, body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text-primary); font-size: 14px; line-height: 1.5; min-height: 100vh; }
+  button { font-family: inherit; }
+
+  /* ===== Top brand nav ===== */
+  .nav { background: var(--sbi-blue); padding: 0 1.5rem; display: flex; align-items: center; height: 52px; gap: 14px; position: sticky; top: 0; z-index: 100; }
+  .nav-logo { color: white; font-size: 17px; font-weight: 700; letter-spacing: 1px; }
+  .nav-sep { width: 1px; height: 20px; background: rgba(255,255,255,0.3); }
+  .nav-title { color: rgba(255,255,255,0.95); font-size: 15px; font-weight: 600; }
+  .nav-badge { background: rgba(255,255,255,0.16); color: white; font-size: 10.5px; padding: 3px 9px; border-radius: 12px; letter-spacing: 0.3px; }
+  .nav-right { margin-left: auto; color: rgba(255,255,255,0.55); font-size: 11.5px; }
+
+  /* ===== Section tab bar (Demo / How it works) ===== */
+  .section-tabs { background: #fff; border-bottom: 1px solid var(--border); display: flex; gap: 0; padding: 0 1.5rem; }
+  .section-tab { padding: 12px 18px; font-size: 13px; font-weight: 600; color: var(--text-secondary); cursor: pointer; border: none; background: none; border-bottom: 2px solid transparent; transition: all 0.15s; }
+  .section-tab:hover { color: var(--sbi-blue); }
+  .section-tab.active { color: var(--sbi-blue); border-bottom-color: var(--sbi-blue); }
+
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* ===== Buttons ===== */
+  .btn { padding: 9px 18px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: all 0.15s; display: inline-flex; align-items: center; gap: 6px; }
+  .btn-primary { background: var(--sbi-blue); color: white; }
+  .btn-primary:hover { background: var(--sbi-blue-dark); }
+  .btn-secondary { background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border); }
+  .btn-secondary:hover { background: var(--bg-secondary); }
+
+  /* ===== Upload screen ===== */
+  .upload-wrap { max-width: 860px; margin: 0 auto; padding: 2.5rem 1.5rem 3rem; }
+  .upload-hero { text-align: center; margin-bottom: 2.25rem; }
+  .upload-hero .eyebrow { font-size: 11.5px; font-weight: 700; color: var(--sbi-blue); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+  .upload-hero h1 { font-size: 27px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; letter-spacing: -0.3px; }
+  .upload-hero p { color: var(--text-secondary); font-size: 14.5px; max-width: 480px; margin: 0 auto; }
+  .upload-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.75rem; margin-bottom: 1.25rem; }
+  .upload-card h2 { font-size: 15px; font-weight: 700; margin-bottom: 1.1rem; display: flex; align-items: center; gap: 9px; }
+  .step-num { width: 22px; height: 22px; background: var(--sbi-blue); color: white; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+  .drop-zone { border: 2px dashed var(--sbi-blue-mid); border-radius: 9px; padding: 2.25rem 1.5rem; text-align: center; cursor: pointer; transition: all 0.2s; background: var(--sbi-blue-light); }
+  .drop-zone:hover, .drop-zone.dragover { border-color: var(--sbi-blue); background: #dce8fb; }
+  .drop-icon { font-size: 32px; margin-bottom: 8px; }
+  .drop-zone p { color: var(--text-secondary); font-size: 13.5px; }
+  .drop-zone strong { color: var(--sbi-blue); }
+  .drop-zone input[type=file] { display: none; }
+  .or-sep { text-align: center; color: var(--text-muted); font-size: 12.5px; margin: 1rem 0; position: relative; }
+  .or-sep::before, .or-sep::after { content: ''; position: absolute; top: 50%; width: 43%; height: 1px; background: var(--border); }
+  .or-sep::before { left: 0; } .or-sep::after { right: 0; }
+  .csv-format { background: var(--bg-secondary); border-radius: 8px; padding: 0.9rem 1.1rem; font-size: 12px; color: var(--text-secondary); margin-bottom: 1rem; }
+  .csv-format code { font-family: 'SF Mono', Menlo, monospace; font-size: 11.5px; color: var(--text-primary); display: block; margin-top: 6px; }
+  textarea.csv-input { width: 100%; height: 120px; border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; font-family: 'SF Mono', Menlo, monospace; font-size: 12px; resize: vertical; outline: none; }
+  textarea.csv-input:focus { border-color: var(--sbi-blue); }
+  .btn-row { display: flex; gap: 10px; margin-top: 1rem; }
+  .upload-card-sub { font-size: 13px; color: var(--text-secondary); margin-bottom: 1rem; }
+  .demo-profiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; }
+  .demo-profile-btn { border: 1px solid var(--border); border-radius: 9px; padding: 13px; cursor: pointer; background: var(--bg-card); text-align: left; transition: all 0.15s; }
+  .demo-profile-btn:hover { border-color: var(--sbi-blue); background: var(--sbi-blue-light); transform: translateY(-1px); }
+  .dp-name { font-size: 13px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+  .dp-event { font-size: 11.5px; color: var(--sbi-blue); font-weight: 500; }
+  .dp-txns { font-size: 11px; color: var(--text-muted); margin-top: 5px; }
+
+  /* ===== Processing screen ===== */
+  .processing-wrap { max-width: 480px; margin: 6rem auto; padding: 2rem; text-align: center; }
+  .spinner { width: 44px; height: 44px; border: 3px solid var(--sbi-blue-mid); border-top-color: var(--sbi-blue); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 1.5rem; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .processing-wrap h2 { font-size: 19px; font-weight: 700; margin-bottom: 8px; }
+  .processing-wrap p { color: var(--text-secondary); font-size: 13.5px; }
+  .progress-steps { margin-top: 2rem; text-align: left; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 1.1rem 1.25rem; }
+  .prog-step { display: flex; align-items: center; gap: 10px; padding: 8px 0; font-size: 13px; color: var(--text-muted); border-bottom: 1px solid var(--border); transition: color 0.2s; }
+  .prog-step:last-child { border-bottom: none; }
+  .prog-step.done { color: var(--green); }
+  .prog-step.active { color: var(--text-primary); font-weight: 600; }
+  .prog-icon { width: 18px; height: 18px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+
+  /* ===== Dashboard ===== */
+  .dash-wrap { max-width: 1120px; margin: 0 auto; padding: 1.5rem; }
+  .dash-topbar { display: flex; align-items: center; gap: 12px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .dash-topbar h1 { font-size: 19px; font-weight: 700; }
+  .source-badge { background: var(--green-bg); color: var(--green); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 12px; }
+  .dash-topbar .btn-secondary { margin-left: auto; font-size: 12px; padding: 7px 14px; }
+  .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 1.5rem; }
+  .summary-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.2rem; }
+  .sc-label { font-size: 10.5px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 7px; font-weight: 600; }
+  .sc-value { font-size: 25px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.5px; }
+  .sc-sub { font-size: 11.5px; color: var(--text-muted); margin-top: 3px; }
+  .customer-tabs { display: flex; gap: 6px; margin-bottom: 1.25rem; flex-wrap: wrap; }
+  .ctab { padding: 7px 15px; border-radius: 8px; border: 1px solid var(--border); font-size: 12.5px; font-weight: 600; cursor: pointer; background: var(--bg-card); color: var(--text-secondary); transition: all 0.15s; display: flex; align-items: center; gap: 7px; }
+  .ctab.active { background: var(--sbi-blue); color: white; border-color: var(--sbi-blue); }
+  .ctab:hover:not(.active) { background: var(--bg-secondary); }
+  .event-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; opacity: 0.85; }
+  .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+  .panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem; }
+  .panel-title { font-size: 11.5px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem; }
+  .customer-header { display: flex; align-items: center; gap: 12px; margin-bottom: 1.1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+  .avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--sbi-blue); color: white; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+  .cname { font-size: 14.5px; font-weight: 700; }
+  .cmeta { font-size: 11.5px; color: var(--text-secondary); margin-top: 2px; }
+  .txn-scroll { max-height: 460px; overflow-y: auto; margin: 0 -4px; padding: 0 4px; }
+  table.txn { width: 100%; border-collapse: collapse; font-size: 12px; }
+  table.txn th { color: var(--text-muted); font-weight: 600; padding: 5px 8px; border-bottom: 1px solid var(--border); text-align: left; position: sticky; top: 0; background: var(--bg-card); }
+  table.txn td { padding: 7px 8px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  table.txn tr:last-child td { border-bottom: none; }
+  table.txn tr.sig td { background: var(--signal-bg); }
+  table.txn tr.sig td:first-child { border-left: 3px solid var(--signal-border); }
+  .tag { display: inline-block; font-size: 9.5px; font-weight: 700; padding: 2px 6px; border-radius: 4px; background: var(--amber-bg); color: var(--amber); margin-left: 5px; white-space: nowrap; }
+  .amt-cr { color: var(--green); font-weight: 600; }
+  .legend { font-size: 11px; color: var(--text-muted); margin-top: 10px; display: flex; align-items: center; gap: 6px; }
+  .legend-dot { width: 10px; height: 10px; background: var(--signal-bg); border: 1px solid var(--signal-border); border-radius: 2px; }
+  .detect-box { background: #f0f4ff; border: 1px solid var(--sbi-blue-mid); border-radius: 9px; padding: 1rem 1.2rem; margin-bottom: 1.1rem; }
+  .detect-label { font-size: 14px; font-weight: 700; color: var(--sbi-blue); margin-bottom: 11px; display: flex; align-items: center; gap: 8px; }
+  .conf-row { display: flex; align-items: center; gap: 10px; }
+  .conf-label-text { font-size: 11.5px; color: var(--text-secondary); width: 105px; flex-shrink: 0; }
+  .conf-track { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .conf-fill { height: 100%; background: var(--sbi-blue); border-radius: 3px; width: 0; transition: width 900ms cubic-bezier(.22,1,.36,1); }
+  .conf-pct { font-size: 12.5px; font-weight: 700; color: var(--sbi-blue); width: 36px; text-align: right; }
+  .signals-section { margin-bottom: 1.1rem; }
+  .signals-title { font-size: 10.5px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .sig-item { display: flex; align-items: flex-start; gap: 8px; font-size: 12.5px; color: var(--text-secondary); padding: 4px 0; line-height: 1.45; }
+  .sig-bullet { width: 6px; height: 6px; border-radius: 50%; background: var(--sbi-blue); flex-shrink: 0; margin-top: 6px; }
+  .action-item { border: 1px solid var(--border); border-radius: 9px; padding: 11px 12px; margin-bottom: 8px; display: flex; gap: 10px; align-items: flex-start; }
+  .action-item:last-child { margin-bottom: 0; }
+  .action-icon { width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 15px; }
+  .icon-rm { background: var(--sbi-blue-light); }
+  .icon-app { background: var(--green-bg); }
+  .icon-call { background: var(--amber-bg); }
+  .action-title { font-size: 13px; font-weight: 700; color: var(--text-primary); margin-bottom: 3px; }
+  .action-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.45; margin-bottom: 7px; }
+  .channel-badge { display: inline-block; font-size: 9.5px; font-weight: 700; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.3px; }
+  .ch-rm { background: var(--sbi-blue-light); color: var(--sbi-blue); }
+  .ch-app { background: var(--green-bg); color: var(--green); }
+  .ch-call { background: var(--amber-bg); color: var(--amber); }
+  .empty-state { padding: 2.5rem 1rem; text-align: center; color: var(--text-secondary); }
+  .empty-state .icon { font-size: 30px; margin-bottom: 12px; }
+  .empty-state .title { font-weight: 700; margin-bottom: 6px; color: var(--text-primary); }
+  .empty-state .desc { font-size: 12.5px; line-height: 1.5; }
+
+  @media (max-width: 860px) {
+    .main-grid { grid-template-columns: 1fr; }
+    .summary-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ===== Pipeline / "How it works" screen ===== */
+  .pipeline-wrap { max-width: 1120px; margin: 0 auto; padding: 1.5rem; }
+  .pipeline-topbar { display: flex; align-items: center; gap: 12px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .pipeline-topbar h1 { font-size: 19px; font-weight: 700; }
+  .pipeline-topbar p { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
+  .pipeline-canvas { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem 1.5rem; overflow-x: auto; }
+  .pipeline-legend { display: flex; gap: 18px; margin-top: 1.4rem; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--text-secondary); }
+  .legend-color { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+  .pipe-node { transition: all 0.3s; }
+  .pipe-node rect { fill: #f8f9fa; stroke: #e0e0e0; stroke-width: 1.5; transition: all 0.3s; }
+  .pipe-node.active rect { fill: #EBF2FF; stroke: #2255A4; }
+  .pipe-node.done rect { fill: #e6f4ea; stroke: #1a7a3c; }
+  .pipe-node.output-rm.lit rect { fill: #EBF2FF; stroke: #2255A4; }
+  .pipe-node.output-app.lit rect { fill: #e6f4ea; stroke: #1a7a3c; }
+  .pipe-node.output-call.lit rect { fill: #fff3cd; stroke: #856404; }
+  .pipe-edge { stroke: #e0e0e0; stroke-width: 2; fill: none; transition: stroke 0.3s; }
+  .pipe-edge.active { stroke: #2255A4; }
+  .pipe-edge.done { stroke: #1a7a3c; }
+  .step-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(195px, 1fr)); gap: 12px; margin-top: 1.5rem; }
+  .step-card { background: var(--bg-secondary); border-radius: 9px; padding: 1rem; border-left: 3px solid var(--border); }
+  .step-card .sc-tag { font-size: 10.5px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; margin-bottom: 5px; }
+  .step-card .sc-title { font-size: 13.5px; font-weight: 700; margin-bottom: 4px; }
+  .step-card .sc-desc { font-size: 11.5px; color: var(--text-secondary); line-height: 1.45; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-logo">SBI</div>
+  <div class="nav-sep"></div>
+  <div class="nav-title">Cue</div>
+  <div class="nav-badge">Agentic AI · Digital Engagement</div>
+  <div class="nav-right">Hackathon Demo · Synthetic Data Only</div>
+</nav>
+
+<div class="section-tabs">
+  <button class="section-tab active" id="sectiontab-demo" onclick="switchSection('demo')">Upload &amp; Analyse</button>
+  <button class="section-tab" id="sectiontab-pipeline" onclick="switchSection('pipeline')">How Cue Works</button>
+</div>
+
+<!-- ============ SCREEN: UPLOAD ============ -->
+<div class="screen active" id="screen-upload">
+  <div class="upload-wrap">
+    <div class="upload-hero">
+      <div class="eyebrow">Signal clustering engine</div>
+      <h1>Upload transaction data</h1>
+      <p>Cue analyses customer transactions to detect real-life events and surface the right product opportunity at the right moment.</p>
+    </div>
+
+    <div class="upload-card">
+      <h2><span class="step-num">1</span> Upload a CSV file</h2>
+      <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
+        <input type="file" id="file-input" accept=".csv" onchange="handleFile(this)">
+        <div class="drop-icon">📂</div>
+        <p><strong>Click to browse</strong> or drag and drop a CSV file here</p>
+        <p style="font-size:11.5px; margin-top:6px; color:#9aa0a6;">Accepted format: .csv · Max 5MB</p>
+      </div>
+      <div class="or-sep">or paste CSV data below</div>
+      <div class="csv-format">
+        <strong>Expected columns:</strong>
+        <code>date, description, type, amount, mcc</code>
+        <code style="margin-top:4px; color:#5f6368">03 Apr 2025, Salary - TCS Ltd, CR, 118000,</code>
+      </div>
+      <textarea class="csv-input" id="csv-text" placeholder="Paste CSV rows here..."></textarea>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="processCSV()">Analyse with Cue →</button>
+        <button class="btn btn-secondary" onclick="clearCSV()">Clear</button>
+      </div>
+    </div>
+
+    <div class="upload-card">
+      <h2><span class="step-num">2</span> Or load a demo customer profile</h2>
+      <p class="upload-card-sub">Pre-loaded synthetic profiles with planted life-event signals, for demonstration.</p>
+      <div class="demo-profiles" id="demo-profiles"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SCREEN: PROCESSING ============ -->
+<div class="screen" id="screen-processing">
+  <div class="processing-wrap">
+    <div class="spinner"></div>
+    <h2>Cue is analysing transactions</h2>
+    <p>Running signal extraction and life-event classification…</p>
+    <div class="progress-steps" id="prog-steps">
+      <div class="prog-step" id="ps1"><span class="prog-icon">⏳</span> Ingesting transaction records</div>
+      <div class="prog-step" id="ps2"><span class="prog-icon">⏳</span> Extracting signals from MCC codes and patterns</div>
+      <div class="prog-step" id="ps3"><span class="prog-icon">⏳</span> Clustering signals per customer</div>
+      <div class="prog-step" id="ps4"><span class="prog-icon">⏳</span> Running life-event classifier</div>
+      <div class="prog-step" id="ps5"><span class="prog-icon">⏳</span> Mapping events to product recommendations</div>
+      <div class="prog-step" id="ps6"><span class="prog-icon">⏳</span> Routing actions to delivery channels</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SCREEN: DASHBOARD ============ -->
+<div class="screen" id="screen-dashboard">
+  <div class="dash-wrap">
+    <div class="dash-topbar">
+      <h1>Cue — Detection Results</h1>
+      <span class="source-badge" id="source-badge">● Loaded from demo profile</span>
+      <button class="btn btn-secondary" onclick="goBack()">← Upload new file</button>
+    </div>
+    <div class="summary-grid" id="summary-grid"></div>
+    <div class="customer-tabs" id="customer-tabs"></div>
+    <div class="main-grid" id="main-grid"></div>
+  </div>
+</div>
+
+<!-- ============ SCREEN: PIPELINE ("How it works") ============ -->
+<div class="screen" id="screen-pipeline">
+  <div class="pipeline-wrap">
+    <div class="pipeline-topbar">
+      <div>
+        <h1>How Cue works</h1>
+        <p>How transaction data flows through Cue's signal extraction, event classification, and action-routing layers — end to end, no core banking changes.</p>
+      </div>
+      <button class="btn btn-secondary" style="margin-left:auto" onclick="replayPipeline()">↺ Replay animation</button>
+    </div>
+
+    <div class="pipeline-canvas">
+      <svg id="pipeline-svg" viewBox="0 0 1180 420" width="100%" xmlns="http://www.w3.org/2000/svg" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;min-width:820px">
+
+        <path class="pipe-edge" id="e0" d="M 118 130 H 175"/>
+        <path class="pipe-edge" id="e1" d="M 293 130 H 350"/>
+        <path class="pipe-edge" id="e2" d="M 468 130 H 525"/>
+        <path class="pipe-edge" id="e3" d="M 643 130 H 700"/>
+        <path class="pipe-edge" id="ep" d="M 760 130 H 810"/>
+        <path class="pipe-edge" id="e4" d="M 950 130 H 990 V 57 H 1018"/>
+        <path class="pipe-edge" id="e7" d="M 950 130 H 990 V 150 H 1018"/>
+        <path class="pipe-edge" id="e6" d="M 950 130 H 990 V 243 H 1018"/>
+
+        <g class="pipe-node" id="n-input">
+          <rect x="10" y="90" width="108" height="80" rx="10"/>
+          <text x="64" y="118" text-anchor="middle" font-size="22">📄</text>
+          <text x="64" y="140" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1a1a">Transaction</text>
+          <text x="64" y="155" text-anchor="middle" font-size="10" fill="#5f6368">CSV / Live Feed</text>
+        </g>
+
+        <g class="pipe-node" id="n-ingest">
+          <rect x="175" y="90" width="118" height="80" rx="10"/>
+          <text x="234" y="118" text-anchor="middle" font-size="22">⚡</text>
+          <text x="234" y="140" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1a1a">Data Ingestion</text>
+          <text x="234" y="155" text-anchor="middle" font-size="10" fill="#5f6368">Kafka · Spark</text>
+        </g>
+
+        <g class="pipe-node" id="n-signal">
+          <rect x="350" y="90" width="118" height="80" rx="10"/>
+          <text x="409" y="118" text-anchor="middle" font-size="22">🔍</text>
+          <text x="409" y="140" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1a1a">Signal Extraction</text>
+          <text x="409" y="155" text-anchor="middle" font-size="10" fill="#5f6368">MCC · patterns · rules</text>
+        </g>
+
+        <g class="pipe-node" id="n-cluster">
+          <rect x="525" y="90" width="118" height="80" rx="10"/>
+          <text x="584" y="118" text-anchor="middle" font-size="22">🧩</text>
+          <text x="584" y="140" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1a1a">Signal Clustering</text>
+          <text x="584" y="155" text-anchor="middle" font-size="10" fill="#5f6368">XGBoost classifier</text>
+        </g>
+
+        <g class="pipe-node" id="n-classify">
+          <rect x="700" y="90" width="60" height="80" rx="10"/>
+          <text x="730" y="122" text-anchor="middle" font-size="20">🎯</text>
+          <text x="730" y="143" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1a1a">Life Event</text>
+          <text x="730" y="156" text-anchor="middle" font-size="10" fill="#5f6368">Detected</text>
+        </g>
+
+        <g class="pipe-node" id="n-product">
+          <rect x="810" y="90" width="140" height="80" rx="10"/>
+          <text x="880" y="118" text-anchor="middle" font-size="22">📈</text>
+          <text x="880" y="140" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1a1a">Product Mapping</text>
+          <text x="880" y="155" text-anchor="middle" font-size="10" fill="#5f6368">Collab. filtering</text>
+        </g>
+
+        <g class="pipe-node output-rm" id="n-rm">
+          <rect x="1018" y="19" width="152" height="76" rx="10"/>
+          <text x="1094" y="45" text-anchor="middle" font-size="18">💼</text>
+          <text x="1094" y="65" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1a1a">RM Alert</text>
+          <text x="1094" y="80" text-anchor="middle" font-size="10" fill="#5f6368">High-value events</text>
+        </g>
+
+        <g class="pipe-node output-app" id="n-app">
+          <rect x="1018" y="119" width="152" height="62" rx="10"/>
+          <text x="1094" y="141" text-anchor="middle" font-size="18">📱</text>
+          <text x="1094" y="159" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1a1a">In-App Nudge</text>
+          <text x="1094" y="173" text-anchor="middle" font-size="10" fill="#5f6368">Self-serve products</text>
+        </g>
+
+        <g class="pipe-node output-call" id="n-call">
+          <rect x="1018" y="205" width="152" height="76" rx="10"/>
+          <text x="1094" y="231" text-anchor="middle" font-size="18">📞</text>
+          <text x="1094" y="251" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1a1a">Call Centre</text>
+          <text x="1094" y="266" text-anchor="middle" font-size="10" fill="#5f6368">Outbound trigger</text>
+        </g>
+
+        <g id="conf-label" opacity="0">
+          <rect x="700" y="200" width="190" height="38" rx="6" fill="#EBF2FF" stroke="#B5D4F4" stroke-width="1"/>
+          <text x="795" y="220" text-anchor="middle" font-size="11" font-weight="700" fill="#2255A4" id="conf-text">Confidence: —</text>
+          <text x="795" y="232" text-anchor="middle" font-size="10" fill="#5f6368" id="event-text">Awaiting classification</text>
+        </g>
+
+        <path id="feedback-arrow" d="M 1094 281 Q 1094 340 584 340 Q 200 340 234 210" stroke="#e0e0e0" stroke-width="1.5" stroke-dasharray="5,4" fill="none" opacity="0"/>
+        <text id="feedback-label" x="660" y="334" text-anchor="middle" font-size="10" fill="#9aa0a6" opacity="0">Feedback loop — outcomes retrain the model</text>
+
+      </svg>
+
+      <div class="pipeline-legend">
+        <div class="legend-item"><div class="legend-color" style="background:#EBF2FF;border:1px solid #2255A4"></div> Active / processing</div>
+        <div class="legend-item"><div class="legend-color" style="background:#e6f4ea;border:1px solid #1a7a3c"></div> Completed</div>
+        <div class="legend-item"><div class="legend-color" style="background:#fff3cd;border:1px solid #856404"></div> Call-centre output</div>
+        <div class="legend-item"><div class="legend-color" style="background:#f8f9fa;border:1px solid #e0e0e0"></div> Idle</div>
+        <div class="legend-item"><div style="width:22px;height:0;border-top:2px dashed #9aa0a6"></div> Feedback loop</div>
+      </div>
+    </div>
+
+    <div class="step-cards">
+      <div class="step-card" id="sc-card-1">
+        <div class="sc-tag">Step 1</div>
+        <div class="sc-title">Data Ingestion</div>
+        <div class="sc-desc">Every transaction streams in real time via Kafka + Spark Streaming. Historical data is pulled for context per customer.</div>
+      </div>
+      <div class="step-card" id="sc-card-2">
+        <div class="sc-tag">Step 2</div>
+        <div class="sc-title">Signal Extraction</div>
+        <div class="sc-desc">Rule-based filters tag each transaction — MCC codes, amount anomalies, recurring patterns, new payee names.</div>
+      </div>
+      <div class="step-card" id="sc-card-3">
+        <div class="sc-tag">Step 3</div>
+        <div class="sc-title">Signal Clustering</div>
+        <div class="sc-desc">An XGBoost model groups weak signals per customer and scores them for life-event confidence.</div>
+      </div>
+      <div class="step-card" id="sc-card-4">
+        <div class="sc-tag">Step 4</div>
+        <div class="sc-title">Event Classification</div>
+        <div class="sc-desc">Life event labelled with a confidence score. Below the 70% threshold, the event is suppressed — no false positives.</div>
+      </div>
+      <div class="step-card" id="sc-card-5">
+        <div class="sc-tag">Step 5</div>
+        <div class="sc-title">Product Mapping</div>
+        <div class="sc-desc">Rule logic + collaborative filtering match the detected event to the right SBI Group product, based on similar customer cohorts.</div>
+      </div>
+      <div class="step-card" id="sc-card-6">
+        <div class="sc-tag">Step 6</div>
+        <div class="sc-title">Action Routing</div>
+        <div class="sc-desc">Right product, right channel — RM alert, in-app nudge, or call-centre trigger, chosen by event type and value.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// Cue — synthetic demo data
+// 5 pre-loaded customer profiles, each with 6 months of
+// transaction history and a planted life-event signal.
+// ============================================================
+
+const CUSTOMERS = [
+  {
+    name: "Rahul Sharma", initials: "RS", meta: "Account since 2019 · Savings Account · Branch: Bengaluru",
+    transactions: [
+      { date: "03 Jan", desc: "Salary — Infosys Ltd", type: "CR", amt: 82000, sig: false },
+      { date: "06 Jan", desc: "UPI — Swiggy", type: "DR", amt: 420, sig: false },
+      { date: "08 Jan", desc: "UPI — Amazon Pay", type: "DR", amt: 1850, sig: false },
+      { date: "10 Jan", desc: "NEFT — SBI MF SIP", type: "DR", amt: 5000, sig: false },
+      { date: "14 Jan", desc: "POS — DMart", type: "DR", amt: 3200, sig: false },
+      { date: "20 Jan", desc: "UPI — Ola", type: "DR", amt: 340, sig: false },
+      { date: "25 Jan", desc: "UPI — Airtel Postpaid", type: "DR", amt: 799, sig: false },
+      { date: "03 Feb", desc: "Salary — Infosys Ltd", type: "CR", amt: 82000, sig: false },
+      { date: "07 Feb", desc: "UPI — Zomato", type: "DR", amt: 580, sig: false },
+      { date: "11 Feb", desc: "NEFT — SBI MF SIP", type: "DR", amt: 5000, sig: false },
+      { date: "15 Feb", desc: "POS — Lifestyle", type: "DR", amt: 4200, sig: false },
+      { date: "18 Feb", desc: "UPI — MakeMyTrip", type: "DR", amt: 6800, sig: false },
+      { date: "03 Mar", desc: "Salary — Infosys Ltd", type: "CR", amt: 82500, sig: false },
+      { date: "08 Mar", desc: "UPI — BookMyShow", type: "DR", amt: 760, sig: false },
+      { date: "12 Mar", desc: "POS — Decathlon", type: "DR", amt: 3400, sig: false },
+      { date: "20 Mar", desc: "NEFT — SBI MF SIP", type: "DR", amt: 5000, sig: false },
+      { date: "03 Apr", desc: "Salary — TCS Ltd", type: "CR", amt: 118000, sig: true, tag: "New employer" },
+      { date: "07 Apr", desc: "UPI — Swiggy", type: "DR", amt: 510, sig: false },
+      { date: "10 Apr", desc: "NEFT — SBI MF SIP", type: "DR", amt: 5000, sig: false },
+      { date: "18 Apr", desc: "POS — Croma", type: "DR", amt: 8900, sig: false },
+      { date: "03 May", desc: "Salary — TCS Ltd", type: "CR", amt: 118000, sig: true, tag: "Recurring confirmed" },
+      { date: "08 May", desc: "UPI — Zomato", type: "DR", amt: 620, sig: false },
+      { date: "12 May", desc: "NEFT — SBI MF SIP", type: "DR", amt: 5000, sig: false },
+      { date: "16 May", desc: "POS — DMart", type: "DR", amt: 3800, sig: false },
+      { date: "03 Jun", desc: "Salary — TCS Ltd", type: "CR", amt: 118000, sig: true, tag: "3rd month confirmed" },
+      { date: "07 Jun", desc: "UPI — Swiggy", type: "DR", amt: 440, sig: false },
+      { date: "10 Jun", desc: "NEFT — SBI MF SIP", type: "DR", amt: 5000, sig: false },
+    ],
+    event: {
+      label: "Job switch + salary hike detected", confidence: 91,
+      signals: [
+        "New employer name in salary credit (Apr) — Infosys → TCS",
+        "Salary increased by 43% vs previous 3-month average (₹82,000 → ₹1,18,000)",
+        "New employer salary confirmed across 3 consecutive months",
+        "Previous employer (Infosys) credits have stopped entirely",
+      ],
+      actions: [
+        { iconType: "rm", title: "SIP upgrade opportunity", desc: "Investable surplus has grown significantly. Recommend increasing monthly SIP from ₹5,000 to ₹12,000–₹15,000 via SBI MF.", channel: "RM Alert", chClass: "ch-rm", icon: "💼" },
+        { iconType: "call", title: "Term insurance review", desc: "Higher income warrants a review of life coverage. Initiate outbound call for SBI Life term-plan upgrade.", channel: "Call Centre", chClass: "ch-call", icon: "📞" },
+        { iconType: "app", title: "Credit card upgrade", desc: "Customer now eligible for SBI Signature card based on new salary bracket. Trigger in-app upgrade prompt.", channel: "In-App Nudge", chClass: "ch-app", icon: "💳" },
+      ],
+    },
+  },
+  {
+    name: "Priya Nair", initials: "PN", meta: "Account since 2021 · Savings Account · Branch: Pune",
+    transactions: [
+      { date: "05 Jan", desc: "Salary — Wipro Ltd", type: "CR", amt: 95000, sig: false },
+      { date: "08 Jan", desc: "UPI — BigBasket", type: "DR", amt: 1240, sig: false },
+      { date: "12 Jan", desc: "UPI — Netflix", type: "DR", amt: 649, sig: false },
+      { date: "15 Jan", desc: "POS — Reliance Fresh", type: "DR", amt: 2100, sig: false },
+      { date: "22 Jan", desc: "UPI — Uber", type: "DR", amt: 420, sig: false },
+      { date: "05 Feb", desc: "Salary — Wipro Ltd", type: "CR", amt: 95000, sig: false },
+      { date: "09 Feb", desc: "UPI — Swiggy", type: "DR", amt: 680, sig: false },
+      { date: "14 Feb", desc: "POS — Shoppers Stop", type: "DR", amt: 5600, sig: false },
+      { date: "19 Feb", desc: "UPI — BookMyShow", type: "DR", amt: 940, sig: false },
+      { date: "05 Mar", desc: "Salary — Wipro Ltd", type: "CR", amt: 95000, sig: false },
+      { date: "10 Mar", desc: "UPI — DMart", type: "DR", amt: 2800, sig: false },
+      { date: "16 Mar", desc: "POS — Westside", type: "DR", amt: 3200, sig: false },
+      { date: "18 Mar", desc: "POS — Maruti Suzuki Arena Pune", type: "DR", amt: 220000, sig: true, tag: "MCC 5511" },
+      { date: "21 Mar", desc: "NEFT — HDFC Auto Loans", type: "DR", amt: 12400, sig: true, tag: "Auto EMI starts" },
+      { date: "05 Apr", desc: "Salary — Wipro Ltd", type: "CR", amt: 95000, sig: false },
+      { date: "08 Apr", desc: "UPI — Swiggy", type: "DR", amt: 520, sig: false },
+      { date: "15 Apr", desc: "POS — PVR Cinemas", type: "DR", amt: 880, sig: false },
+      { date: "18 Apr", desc: "UPI — Uber", type: "DR", amt: 460, sig: false },
+      { date: "21 Apr", desc: "NEFT — HDFC Auto Loans", type: "DR", amt: 12400, sig: true, tag: "EMI confirmed" },
+      { date: "05 May", desc: "Salary — Wipro Ltd", type: "CR", amt: 95000, sig: false },
+      { date: "09 May", desc: "UPI — Zomato", type: "DR", amt: 610, sig: false },
+      { date: "14 May", desc: "POS — Reliance Fresh", type: "DR", amt: 2400, sig: false },
+      { date: "21 May", desc: "NEFT — HDFC Auto Loans", type: "DR", amt: 12400, sig: true, tag: "EMI recurring" },
+      { date: "05 Jun", desc: "Salary — Wipro Ltd", type: "CR", amt: 95000, sig: false },
+      { date: "08 Jun", desc: "UPI — Swiggy", type: "DR", amt: 570, sig: false },
+    ],
+    event: {
+      label: "Vehicle purchase detected", confidence: 88,
+      signals: [
+        "Large debit at Maruti Suzuki Arena — classified as MCC 5511 (car dealer)",
+        "Followed immediately by recurring NEFT to auto finance company (HDFC Auto Loans)",
+        "EMI amount ₹12,400 consistent across 3 months — confirms loan servicing",
+        "No prior auto-loan EMI pattern in account history",
+      ],
+      actions: [
+        { iconType: "app", title: "Vehicle insurance", desc: "New vehicle purchase detected. Prompt customer to explore SBI General vehicle insurance — mandatory and time-sensitive.", channel: "In-App Nudge", chClass: "ch-app", icon: "🚗" },
+        { iconType: "call", title: "Auto loan refinancing", desc: "Customer is currently servicing a third-party auto loan (HDFC). Initiate outbound call to offer SBI auto loan at a competitive rate.", channel: "Call Centre", chClass: "ch-call", icon: "📞" },
+        { iconType: "rm", title: "Build emergency buffer", desc: "Disposable income is now partially committed to EMI. Suggest a recurring deposit to maintain financial cushion.", channel: "RM Alert", chClass: "ch-rm", icon: "💼" },
+      ],
+    },
+  },
+  {
+    name: "Arjun Mehta", initials: "AM", meta: "Account since 2017 · Savings Account · Branch: Mumbai",
+    transactions: [
+      { date: "02 Jan", desc: "Salary — Deloitte India", type: "CR", amt: 110000, sig: false },
+      { date: "07 Jan", desc: "UPI — IRCTC", type: "DR", amt: 3200, sig: false },
+      { date: "10 Jan", desc: "UPI — Swiggy", type: "DR", amt: 640, sig: false },
+      { date: "15 Jan", desc: "POS — Lifestyle", type: "DR", amt: 4500, sig: false },
+      { date: "02 Feb", desc: "Salary — Deloitte India", type: "CR", amt: 110000, sig: false },
+      { date: "08 Feb", desc: "UPI — Amazon", type: "DR", amt: 2300, sig: false },
+      { date: "14 Feb", desc: "POS — Tanishq", type: "DR", amt: 18000, sig: false },
+      { date: "02 Mar", desc: "Salary — Deloitte India", type: "CR", amt: 110000, sig: false },
+      { date: "11 Mar", desc: "UPI — BookMyShow", type: "DR", amt: 1100, sig: false },
+      { date: "15 Mar", desc: "Inward SWIFT — Standard Chartered UK", type: "CR", amt: 185000, sig: true, tag: "SWIFT inward" },
+      { date: "02 Apr", desc: "Salary — Deloitte India", type: "CR", amt: 110000, sig: false },
+      { date: "08 Apr", desc: "UPI — Zomato", type: "DR", amt: 480, sig: false },
+      { date: "14 Apr", desc: "Inward SWIFT — Standard Chartered UK", type: "CR", amt: 185000, sig: true, tag: "2nd remittance" },
+      { date: "20 Apr", desc: "POS — DMart", type: "DR", amt: 2900, sig: false },
+      { date: "02 May", desc: "Salary — Deloitte India", type: "CR", amt: 110000, sig: false },
+      { date: "10 May", desc: "UPI — Swiggy", type: "DR", amt: 720, sig: false },
+      { date: "13 May", desc: "Inward SWIFT — Standard Chartered UK", type: "CR", amt: 185000, sig: true, tag: "Recurring confirmed" },
+      { date: "02 Jun", desc: "Salary — Deloitte India", type: "CR", amt: 110000, sig: false },
+      { date: "09 Jun", desc: "UPI — IRCTC", type: "DR", amt: 4100, sig: false },
+    ],
+    event: {
+      label: "Regular inward foreign remittance detected", confidence: 85,
+      signals: [
+        "Inward SWIFT remittance from Standard Chartered UK — ₹1,85,000",
+        "Same source and similar amount repeated across 3 consecutive months",
+        "Remittance amount exceeds monthly salary — suggests family support or overseas savings",
+        "No prior inward SWIFT history on this account before March",
+      ],
+      actions: [
+        { iconType: "rm", title: "NRI account conversion", desc: "Customer is receiving regular foreign remittances. RM to engage — NRI/NRE account offers tax-free interest and higher FD rates on foreign income.", channel: "RM Alert", chClass: "ch-rm", icon: "💼" },
+        { iconType: "app", title: "Forex fixed deposit", desc: "Suggest an SBI RFC/FCNR deposit to hold foreign currency and earn interest without conversion loss.", channel: "In-App Nudge", chClass: "ch-app", icon: "💱" },
+        { iconType: "call", title: "International travel insurance", desc: "Remittance profile suggests close international ties. Offer SBI General international travel insurance.", channel: "Call Centre", chClass: "ch-call", icon: "📞" },
+      ],
+    },
+  },
+  {
+    name: "Sneha Kulkarni", initials: "SK", meta: "Account since 2018 · Savings Account · Branch: Hyderabad",
+    transactions: [
+      { date: "01 Jan", desc: "Salary — HCL Technologies", type: "CR", amt: 105000, sig: false },
+      { date: "06 Jan", desc: "UPI — Swiggy", type: "DR", amt: 490, sig: false },
+      { date: "09 Jan", desc: "UPI — Amazon", type: "DR", amt: 2100, sig: false },
+      { date: "12 Jan", desc: "POS — DMart", type: "DR", amt: 2800, sig: false },
+      { date: "16 Jan", desc: "UPI — Ola", type: "DR", amt: 360, sig: false },
+      { date: "24 Jan", desc: "NEFT — SBI MF SIP", type: "DR", amt: 8000, sig: false },
+      { date: "01 Feb", desc: "Salary — HCL Technologies", type: "CR", amt: 105000, sig: false },
+      { date: "07 Feb", desc: "UPI — Zomato", type: "DR", amt: 610, sig: false },
+      { date: "10 Feb", desc: "UPI — BigBasket", type: "DR", amt: 1350, sig: false },
+      { date: "14 Feb", desc: "POS — Shoppers Stop", type: "DR", amt: 4800, sig: false },
+      { date: "22 Feb", desc: "UPI — Netflix", type: "DR", amt: 649, sig: false },
+      { date: "25 Feb", desc: "NEFT — SBI MF SIP", type: "DR", amt: 8000, sig: false },
+      { date: "01 Mar", desc: "Salary — HCL Technologies", type: "CR", amt: 105000, sig: false },
+      { date: "05 Mar", desc: "UPI — Swiggy", type: "DR", amt: 520, sig: false },
+      { date: "15 Mar", desc: "UPI — Amazon", type: "DR", amt: 3400, sig: false },
+      { date: "20 Mar", desc: "NEFT — SBI MF SIP", type: "DR", amt: 8000, sig: false },
+      { date: "01 Apr", desc: "Salary — HCL Technologies", type: "CR", amt: 105000, sig: false },
+      { date: "04 Apr", desc: "NEFT — SBI Home Loans EMI", type: "DR", amt: 32500, sig: true, tag: "Home loan EMI starts" },
+      { date: "07 Apr", desc: "UPI — Swiggy", type: "DR", amt: 440, sig: false },
+      { date: "11 Apr", desc: "UPI — BigBasket", type: "DR", amt: 1600, sig: false },
+      { date: "18 Apr", desc: "UPI — Airtel Postpaid", type: "DR", amt: 849, sig: false },
+      { date: "01 May", desc: "Salary — HCL Technologies", type: "CR", amt: 105000, sig: false },
+      { date: "04 May", desc: "NEFT — SBI Home Loans EMI", type: "DR", amt: 32500, sig: true, tag: "2nd EMI confirmed" },
+      { date: "08 May", desc: "UPI — Zomato", type: "DR", amt: 580, sig: false },
+      { date: "12 May", desc: "UPI — Amazon", type: "DR", amt: 1900, sig: false },
+      { date: "16 May", desc: "POS — Lifestyle", type: "DR", amt: 3600, sig: false },
+      { date: "24 May", desc: "NEFT — SBI MF SIP", type: "DR", amt: 8000, sig: false },
+      { date: "01 Jun", desc: "Salary — HCL Technologies", type: "CR", amt: 105000, sig: false },
+      { date: "04 Jun", desc: "NEFT — SBI Home Loans EMI", type: "DR", amt: 32500, sig: true, tag: "3rd EMI recurring" },
+      { date: "08 Jun", desc: "UPI — Swiggy", type: "DR", amt: 510, sig: false },
+      { date: "12 Jun", desc: "UPI — BigBasket", type: "DR", amt: 1420, sig: false },
+    ],
+    event: {
+      label: "Home loan EMI started", confidence: 93,
+      signals: [
+        "New recurring NEFT to SBI Home Loans — ₹32,500/month starting April",
+        "EMI amount confirmed across 3 consecutive months — no prior home-loan payments",
+        "EMI represents 31% of monthly salary — a significant financial commitment",
+        "No prior home-loan servicing pattern in account history",
+      ],
+      actions: [
+        { iconType: "app", title: "Home insurance", desc: "New home loan detected. SBI General home insurance is a natural, time-sensitive cross-sell — prompt via in-app notification.", channel: "In-App Nudge", chClass: "ch-app", icon: "🏠" },
+        { iconType: "rm", title: "Home loan top-up eligibility", desc: "Customer has been servicing EMI for 3 months. RM to evaluate top-up loan eligibility for interiors or furnishing.", channel: "RM Alert", chClass: "ch-rm", icon: "💼" },
+        { iconType: "call", title: "Life cover linked to loan", desc: "Home loan outstanding warrants a term-insurance cover equal to loan value. Initiate outbound call for SBI Life home-loan protection plan.", channel: "Call Centre", chClass: "ch-call", icon: "📞" },
+      ],
+    },
+  },
+  {
+    name: "Vikram Desai", initials: "VD", meta: "Account since 2016 · Savings Account · Branch: Chennai",
+    transactions: [
+      { date: "03 Jan", desc: "Salary — Tata Consultancy Services", type: "CR", amt: 145000, sig: false },
+      { date: "07 Jan", desc: "UPI — Swiggy", type: "DR", amt: 560, sig: false },
+      { date: "10 Jan", desc: "UPI — Amazon", type: "DR", amt: 3200, sig: false },
+      { date: "13 Jan", desc: "POS — DMart", type: "DR", amt: 3600, sig: false },
+      { date: "17 Jan", desc: "NEFT — SBI MF SIP", type: "DR", amt: 10000, sig: false },
+      { date: "20 Jan", desc: "UPI — Uber", type: "DR", amt: 480, sig: false },
+      { date: "28 Jan", desc: "POS — Croma", type: "DR", amt: 6400, sig: false },
+      { date: "03 Feb", desc: "Salary — Tata Consultancy Services", type: "CR", amt: 145000, sig: false },
+      { date: "06 Feb", desc: "UPI — Zomato", type: "DR", amt: 720, sig: false },
+      { date: "10 Feb", desc: "NEFT — SBI MF SIP", type: "DR", amt: 10000, sig: false },
+      { date: "14 Feb", desc: "POS — Shoppers Stop", type: "DR", amt: 5200, sig: false },
+      { date: "18 Feb", desc: "UPI — BookMyShow", type: "DR", amt: 1100, sig: false },
+      { date: "03 Mar", desc: "Salary — Tata Consultancy Services", type: "CR", amt: 145000, sig: false },
+      { date: "07 Mar", desc: "UPI — Swiggy", type: "DR", amt: 610, sig: false },
+      { date: "11 Mar", desc: "NEFT — SBI MF SIP", type: "DR", amt: 10000, sig: false },
+      { date: "19 Mar", desc: "UPI — Amazon", type: "DR", amt: 4100, sig: false },
+      { date: "03 Apr", desc: "Salary — Tata Consultancy Services", type: "CR", amt: 145000, sig: false },
+      { date: "05 Apr", desc: "NEFT — SBI MF Lumpsum Bluechip Fund", type: "DR", amt: 500000, sig: true, tag: "Large lumpsum" },
+      { date: "07 Apr", desc: "UPI — Swiggy", type: "DR", amt: 490, sig: false },
+      { date: "10 Apr", desc: "NEFT — SBI MF SIP", type: "DR", amt: 10000, sig: false },
+      { date: "14 Apr", desc: "POS — DMart", type: "DR", amt: 3100, sig: false },
+      { date: "03 May", desc: "Salary — Tata Consultancy Services", type: "CR", amt: 145000, sig: false },
+      { date: "07 May", desc: "UPI — Zomato", type: "DR", amt: 640, sig: false },
+      { date: "10 May", desc: "NEFT — SBI MF SIP", type: "DR", amt: 10000, sig: false },
+      { date: "14 May", desc: "POS — Lifestyle", type: "DR", amt: 4800, sig: false },
+      { date: "22 May", desc: "NEFT — SBI MF Lumpsum Midcap Fund", type: "DR", amt: 300000, sig: true, tag: "2nd lumpsum" },
+      { date: "03 Jun", desc: "Salary — Tata Consultancy Services", type: "CR", amt: 145000, sig: false },
+      { date: "07 Jun", desc: "UPI — Swiggy", type: "DR", amt: 530, sig: false },
+      { date: "10 Jun", desc: "NEFT — SBI MF SIP", type: "DR", amt: 10000, sig: false },
+      { date: "14 Jun", desc: "POS — DMart", type: "DR", amt: 2900, sig: false },
+    ],
+    event: {
+      label: "Large lump-sum investment activity detected", confidence: 87,
+      signals: [
+        "NEFT of ₹5,00,000 to SBI MF Bluechip Fund — significantly above monthly SIP pattern",
+        "Second lump sum of ₹3,00,000 to SBI MF Midcap Fund within 7 weeks",
+        "Total lump-sum investment ₹8,00,000 — 5.5x monthly salary",
+        "Customer already runs a regular SIP — indicates growing investment intent",
+      ],
+      actions: [
+        { iconType: "rm", title: "Portfolio review meeting", desc: "High-value investment activity signals a serious investor. RM to schedule a portfolio review and discuss diversification across equity, debt, and gold.", channel: "RM Alert", chClass: "ch-rm", icon: "💼" },
+        { iconType: "app", title: "Demat account activation", desc: "Investment scale suggests the customer may benefit from direct equity. Prompt activation of an SBI Securities demat account.", channel: "In-App Nudge", chClass: "ch-app", icon: "📈" },
+        { iconType: "call", title: "Tax-saving instruments", desc: "With ₹8L invested, the customer is likely approaching 80C limits. Initiate an outbound call to discuss SBI Life ULIP or ELSS for tax optimisation.", channel: "Call Centre", chClass: "ch-call", icon: "📞" },
+      ],
+    },
+  },
+];
+
+// ============================================================
+// Cue — interaction logic
+// ============================================================
+
+let activeCustomers = [];
+let dataSource = "demo";
+
+function fmt(n) { return "₹" + Number(n).toLocaleString("en-IN"); }
+
+/* ---------- Section switching (Upload&Analyse vs How it works) ---------- */
+function switchSection(section) {
+  document.querySelectorAll(".section-tab").forEach((t) => t.classList.remove("active"));
+  document.getElementById("sectiontab-" + section).classList.add("active");
+
+  if (section === "pipeline") {
+    showScreen("screen-pipeline");
+    replayPipeline();
+  } else {
+    // return to whichever demo screen was active (default upload)
+    const demoScreens = ["screen-upload", "screen-processing", "screen-dashboard"];
+    const current = demoScreens.find((id) => document.getElementById(id).classList.contains("active"));
+    showScreen(current || "screen-upload");
+  }
+}
+
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach((s) => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
+/* ---------- Demo profile cards ---------- */
+function renderDemoProfiles() {
+  const eventEmoji = ["🔵", "🚗", "🌍", "🏠", "📈"];
+  const wrap = document.getElementById("demo-profiles");
+  wrap.innerHTML = CUSTOMERS.map((c, i) => `
+    <button class="demo-profile-btn" onclick="loadDemo(${i})">
+      <div class="dp-name">${c.name}</div>
+      <div class="dp-event">${eventEmoji[i] || "🔵"} ${c.event.label.replace(" detected", "").replace(" started", "")}</div>
+      <div class="dp-txns">${c.transactions.length} transactions · 6 months</div>
+    </button>`).join("");
+}
+
+function loadDemo(idx) {
+  activeCustomers = [CUSTOMERS[idx]];
+  dataSource = `Demo profile: ${CUSTOMERS[idx].name}`;
+  runProcessing();
+}
+
+/* ---------- CSV upload + paste ---------- */
+function processCSV() {
+  const text = document.getElementById("csv-text").value.trim();
+  if (!text) { alert("Please paste CSV data or upload a file first."); return; }
+  const lines = text.split("\n").filter((l) => l.trim());
+  const txns = [];
+  for (const l of lines) {
+    const parts = l.split(",").map((p) => p.trim());
+    if (parts.length < 4) continue;
+    if (parts[0].toLowerCase() === "date") continue;
+    txns.push({ date: parts[0], desc: parts[1], type: (parts[2] || "").toUpperCase(), amt: parseFloat(parts[3]) || 0, sig: false });
+  }
+  if (txns.length === 0) { alert("No valid rows found. Check the CSV format shown above."); return; }
+  const custom = { name: "Uploaded Customer", initials: "UC", meta: `${txns.length} transactions loaded from CSV`, transactions: txns, event: detectEvent(txns) };
+  activeCustomers = [custom];
+  dataSource = `CSV upload · ${txns.length} transactions`;
+  runProcessing();
+}
+
+function detectEvent(txns) {
+  const salaryCredits = txns.filter((t) => t.type === "CR" && t.desc.toLowerCase().includes("salary"));
+  const swiftCredits = txns.filter((t) => t.type === "CR" && (t.desc.toLowerCase().includes("swift") || t.desc.toLowerCase().includes("remit")));
+  const carDealer = txns.filter((t) => t.type === "DR" && (t.desc.toLowerCase().includes("maruti") || t.desc.toLowerCase().includes("hyundai") || t.desc.toLowerCase().includes("honda") || t.desc.toLowerCase().includes("mcc 5511")));
+  const autoEmi = txns.filter((t) => t.type === "DR" && (t.desc.toLowerCase().includes("auto loan") || t.desc.toLowerCase().includes("car loan")));
+  const homeLoan = txns.filter((t) => t.type === "DR" && (t.desc.toLowerCase().includes("home loan") || t.desc.toLowerCase().includes("housing loan")));
+  const lumpsum = txns.filter((t) => t.type === "DR" && t.desc.toLowerCase().includes("lumpsum") && t.amt >= 100000);
+
+  if (homeLoan.length >= 2) return { label: "Home loan EMI detected", confidence: 91, signals: ["Recurring NEFT to home-loan account detected", "EMI pattern confirmed across multiple months"], actions: [{ iconType: "app", title: "Home insurance", desc: "New home loan detected. Offer SBI General home insurance.", channel: "In-App Nudge", chClass: "ch-app", icon: "🏠" }, { iconType: "rm", title: "Life cover linked to loan", desc: "Term insurance cover equal to outstanding loan value recommended.", channel: "RM Alert", chClass: "ch-rm", icon: "💼" }] };
+  if (lumpsum.length >= 1) return { label: "Large lump-sum investment detected", confidence: 84, signals: ["One or more large lump-sum investment transfers found", "Amount significantly above regular SIP pattern"], actions: [{ iconType: "rm", title: "Portfolio review", desc: "Large investment signals a serious investor — schedule an RM portfolio review.", channel: "RM Alert", chClass: "ch-rm", icon: "💼" }, { iconType: "app", title: "Demat account", desc: "Investment scale suggests direct-equity interest. Prompt SBI Securities demat activation.", channel: "In-App Nudge", chClass: "ch-app", icon: "📈" }] };
+  if (swiftCredits.length >= 2) return { label: "Inward foreign remittance detected", confidence: 82, signals: ["Multiple inward SWIFT/remittance credits found", "Recurring pattern suggests regular foreign income"], actions: [{ iconType: "rm", title: "NRI account conversion", desc: "Regular foreign remittances detected. Discuss NRI/NRE account benefits.", channel: "RM Alert", chClass: "ch-rm", icon: "💼" }] };
+  if (carDealer.length > 0 || autoEmi.length >= 2) return { label: "Possible vehicle purchase detected", confidence: 74, signals: ["Car-dealer or auto-loan EMI pattern found in transactions"], actions: [{ iconType: "app", title: "Vehicle insurance", desc: "Vehicle purchase signal found. Offer SBI General vehicle insurance.", channel: "In-App Nudge", chClass: "ch-app", icon: "🚗" }] };
+  if (salaryCredits.length >= 2) {
+    const amts = salaryCredits.map((t) => t.amt); const max = Math.max(...amts); const min = Math.min(...amts);
+    if (max > min * 1.2) return { label: "Salary increase detected", confidence: 78, signals: ["Salary credit increased by " + Math.round((max / min - 1) * 100) + "% across the observed period"], actions: [{ iconType: "app", title: "Investment opportunity", desc: "Income increase detected. Recommend SIP or FD upgrade.", channel: "In-App Nudge", chClass: "ch-app", icon: "📈" }] };
+  }
+  return { label: "No high-confidence life event detected", confidence: 0, signals: ["Insufficient signals in uploaded data to classify a life event", "Consider uploading 4–6 months of transaction history for better detection"], actions: [] };
+}
+
+function handleFile(input) {
+  const file = input.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => { document.getElementById("csv-text").value = e.target.result; };
+  reader.readAsText(file);
+}
+
+function clearCSV() { document.getElementById("csv-text").value = ""; document.getElementById("file-input").value = ""; }
+
+function setupDropZone() {
+  const drop = document.getElementById("drop-zone");
+  drop.addEventListener("dragover", (e) => { e.preventDefault(); drop.classList.add("dragover"); });
+  drop.addEventListener("dragleave", () => drop.classList.remove("dragover"));
+  drop.addEventListener("drop", (e) => {
+    e.preventDefault(); drop.classList.remove("dragover");
+    const file = e.dataTransfer.files[0];
+    if (file) { const r = new FileReader(); r.onload = (ev) => { document.getElementById("csv-text").value = ev.target.result; }; r.readAsText(file); }
+  });
+}
+
+/* ---------- Processing animation ---------- */
+function runProcessing() {
+  showScreen("screen-processing");
+  const steps = ["ps1", "ps2", "ps3", "ps4", "ps5", "ps6"];
+  steps.forEach((id) => { const el = document.getElementById(id); el.className = "prog-step"; el.querySelector(".prog-icon").textContent = "⏳"; });
+  let i = 0;
+  function next() {
+    if (i > 0) { const prev = document.getElementById(steps[i - 1]); prev.className = "prog-step done"; prev.querySelector(".prog-icon").textContent = "✅"; }
+    if (i < steps.length) { document.getElementById(steps[i]).className = "prog-step active"; document.getElementById(steps[i]).querySelector(".prog-icon").textContent = "🔄"; i++; setTimeout(next, 460); }
+    else { setTimeout(showDashboard, 300); }
+  }
+  next();
+}
+
+/* ---------- Dashboard rendering ---------- */
+function showDashboard() {
+  document.getElementById("source-badge").textContent = "● " + dataSource;
+  renderSummary(); renderTabs(); renderMain(0);
+  showScreen("screen-dashboard");
+}
+
+function renderSummary() {
+  const total = activeCustomers.length;
+  const detected = activeCustomers.filter((c) => c.event.confidence >= 70).length;
+  const actions = activeCustomers.reduce((s, c) => s + c.event.actions.length, 0);
+  const avgConf = detected > 0 ? Math.round(activeCustomers.filter((c) => c.event.confidence >= 70).reduce((s, c) => s + c.event.confidence, 0) / detected) : 0;
+  document.getElementById("summary-grid").innerHTML = `
+    <div class="summary-card"><div class="sc-label">Customers analysed</div><div class="sc-value">${total}</div><div class="sc-sub">From uploaded data</div></div>
+    <div class="summary-card"><div class="sc-label">Life events detected</div><div class="sc-value">${detected}</div><div class="sc-sub">Confidence ≥ 70%</div></div>
+    <div class="summary-card"><div class="sc-label">Actions generated</div><div class="sc-value">${actions}</div><div class="sc-sub">RM · In-app · Call centre</div></div>
+    <div class="summary-card"><div class="sc-label">Avg. confidence</div><div class="sc-value">${avgConf}%</div><div class="sc-sub">Signal cluster score</div></div>`;
+}
+
+function renderTabs() {
+  document.getElementById("customer-tabs").innerHTML = activeCustomers.map((c, i) => `
+    <button class="ctab ${i === 0 ? "active" : ""}" onclick="selectCustomerTab(${i})">
+      <span class="event-dot"></span>${c.name}
+    </button>`).join("");
+}
+
+function selectCustomerTab(i) {
+  renderMain(i);
+  document.querySelectorAll(".ctab").forEach((t, j) => t.classList.toggle("active", j === i));
+}
+
+function renderMain(idx) {
+  const c = activeCustomers[idx]; const e = c.event;
+  document.getElementById("main-grid").innerHTML = `
+    <div class="panel">
+      <div class="panel-title">Transaction history</div>
+      <div class="customer-header">
+        <div class="avatar">${c.initials}</div>
+        <div><div class="cname">${c.name}</div><div class="cmeta">${c.meta}</div></div>
+      </div>
+      <div class="txn-scroll">
+      <table class="txn">
+        <thead><tr><th>Date</th><th>Description</th><th style="text-align:right">Amount</th></tr></thead>
+        <tbody>${c.transactions.map((t) => `
+          <tr class="${t.sig ? "sig" : ""}">
+            <td style="color:var(--text-muted);white-space:nowrap;font-size:11px">${t.date}</td>
+            <td>${t.desc}${t.sig && t.tag ? `<span class="tag">${t.tag}</span>` : ""}</td>
+            <td style="text-align:right" class="${t.type === "CR" ? "amt-cr" : ""}">${t.type === "CR" ? "+" : "−"}${fmt(t.amt)}</td>
+          </tr>`).join("")}
+        </tbody>
+      </table>
+      </div>
+      <div class="legend"><span class="legend-dot"></span> Highlighted rows contributed to signal detection</div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">Cue — detection output</div>
+      ${e.confidence > 0 ? `
+      <div class="detect-box">
+        <div class="detect-label">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2255A4" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          ${e.label}
+        </div>
+        <div class="conf-row">
+          <span class="conf-label-text">Confidence score</span>
+          <div class="conf-track"><div class="conf-fill" id="conf-fill-bar" style="width:0%"></div></div>
+          <span class="conf-pct">${e.confidence}%</span>
+        </div>
+      </div>
+      <div class="signals-section">
+        <div class="signals-title">Signals detected</div>
+        ${e.signals.map((s) => `<div class="sig-item"><span class="sig-bullet"></span>${s}</div>`).join("")}
+      </div>
+      <div>
+        <div class="signals-title" style="margin-top:1rem">Recommended actions</div>
+        ${e.actions.map((a) => `
+          <div class="action-item">
+            <div class="action-icon icon-${a.iconType}">${a.icon}</div>
+            <div>
+              <div class="action-title">${a.title}</div>
+              <div class="action-desc">${a.desc}</div>
+              <span class="channel-badge ${a.chClass}">${a.channel}</span>
+            </div>
+          </div>`).join("")}
+      </div>` : `
+      <div class="empty-state">
+        <div class="icon">🔍</div>
+        <div class="title">${e.label}</div>
+        <div class="desc">${e.signals.join("<br>")}</div>
+      </div>`}
+    </div>`;
+
+  // animate confidence bar in after paint
+  requestAnimationFrame(() => {
+    const bar = document.getElementById("conf-fill-bar");
+    if (bar) requestAnimationFrame(() => { bar.style.width = e.confidence + "%"; });
+  });
+}
+
+function goBack() { activeCustomers = []; showScreen("screen-upload"); }
+
+/* ---------- Pipeline ("How it works") animation ---------- */
+let pipeTimer = null;
+
+function resetPipeline() {
+  clearTimeout(pipeTimer);
+  ["n-input", "n-ingest", "n-signal", "n-cluster", "n-classify", "n-product", "n-rm", "n-app", "n-call"].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove("active", "done", "lit");
+  });
+  ["e0", "e1", "e2", "e3", "ep", "e4", "e6", "e7"].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove("active", "done");
+  });
+  const confLabel = document.getElementById("conf-label");
+  if (confLabel) confLabel.style.opacity = 0;
+  const fb = document.getElementById("feedback-arrow");
+  const fbl = document.getElementById("feedback-label");
+  if (fb) fb.style.opacity = 0;
+  if (fbl) fbl.style.opacity = 0;
+}
+
+function replayPipeline() {
+  resetPipeline();
+  const steps = [
+    () => { setN("n-input", "active"); },
+    () => { setN("n-input", "done"); setE("e0"); setN("n-ingest", "active"); setCard(1, "active"); },
+    () => { setN("n-ingest", "done"); setCard(1, "done"); setE("e1"); setN("n-signal", "active"); setCard(2, "active"); },
+    () => { setN("n-signal", "done"); setCard(2, "done"); setE("e2"); setN("n-cluster", "active"); setCard(3, "active"); },
+    () => { setN("n-cluster", "done"); setCard(3, "done"); setE("e3"); setN("n-classify", "active"); setCard(4, "active"); },
+    () => {
+      setN("n-classify", "done"); setCard(4, "done");
+      const confLabel = document.getElementById("conf-label");
+      const confText = document.getElementById("conf-text");
+      const eventText = document.getElementById("event-text");
+      if (confText) confText.textContent = "Confidence: 91%";
+      if (eventText) eventText.textContent = "Job switch + salary hike";
+      if (confLabel) confLabel.style.opacity = 1;
+    },
+    () => { setE("ep"); setN("n-product", "active"); setCard(5, "active"); },
+    () => { setN("n-product", "done"); setCard(5, "done"); setCard(6, "active"); },
+    () => { setE("e4"); setN("n-rm", "lit"); },
+    () => { setE("e7"); setN("n-app", "lit"); },
+    () => { setE("e6"); setN("n-call", "lit"); setCard(6, "done"); },
+    () => {
+      const fb = document.getElementById("feedback-arrow");
+      const fbl = document.getElementById("feedback-label");
+      if (fb) fb.style.opacity = 1;
+      if (fbl) fbl.style.opacity = 1;
+    },
+  ];
+  let i = 0;
+  function next() { if (i < steps.length) { steps[i](); i++; pipeTimer = setTimeout(next, 560); } }
+  next();
+}
+
+function setN(id, cls) { const el = document.getElementById(id); if (el) el.classList.add(cls); }
+function setE(id) { const el = document.getElementById(id); if (el) el.classList.add("active"); }
+function setCard(n, state) {
+  const el = document.getElementById("sc-card-" + n);
+  if (!el) return;
+  el.style.borderLeftColor = state === "active" ? "#2255A4" : state === "done" ? "#1a7a3c" : "var(--border)";
+  el.style.background = state === "active" ? "#EBF2FF" : "var(--bg-secondary)";
+}
+
+/* ---------- Init ---------- */
+document.addEventListener("DOMContentLoaded", () => {
+  renderDemoProfiles();
+  setupDropZone();
+});
+
+</script>
+</body>
+</html>
